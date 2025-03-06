@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         "https://tonosmovil.net/wp-content/uploads/sonidos-graciosos/Wii_Song.mp3",
         "https://tonosmovil.net/wp-content/uploads/descargar_tonos/Zelda.mp3",
         "https://tonosmovil.net/wp-content/uploads/descargar_tonos2024/Tokyo-Ghoul.mp3",
-        "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
+        "https://youtu.be/FwENr8Mr6SU?si=eTwpWkyLcS_7-ibB",
         "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
     )
     private var currentAudioIndex = 0
@@ -66,11 +66,14 @@ class MainActivity : AppCompatActivity() {
             if (isPlaying) {
                 player?.pause()
                 btnPlayPause.setImageResource(R.drawable.ic_play)
+                isPlaying = false
             } else {
                 player?.play()
                 btnPlayPause.setImageResource(R.drawable.ic_pause)
+                isPlaying = true
+                startSeekBarUpdater()
+                startAudioService() // Si tienes el servicio para audio en segundo plano
             }
-            isPlaying = !isPlaying
         }
 
         // Botón Siguiente: cambia al siguiente audio
@@ -90,15 +93,16 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnStop.setOnClickListener {
-            stopSeekBarUpdater()
-            player?.stop()
+            player?.stop() //
             player?.seekTo(0)
-            player?.clearMediaItems()
-
+            stopAudioService()
+            stopSeekBarUpdater()
             seekBar.progress = 0
-            isPlaying = false
+            player?.prepare()
             btnPlayPause.setImageResource(R.drawable.ic_play)
+            isPlaying = false
         }
+
 
         seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
@@ -116,41 +120,28 @@ class MainActivity : AppCompatActivity() {
             override fun onPlaybackStateChanged(state: Int) {
                 if (state == Player.STATE_ENDED) {
                     stopSeekBarUpdater()
-                    // Pasar a la siguiente canción automáticamente
-                    if (currentAudioIndex < audioUrls.size - 1) {
-                        currentAudioIndex++
-                    } else {
-                        currentAudioIndex = 0
-                    }
-                    cargarYPrepararAudio(currentAudioIndex)
+                    isPlaying = false
+                    btnPlayPause.setImageResource(R.drawable.ic_play)
                 }
             }
         })
-}
+    }
 
 
     private fun cargarYPrepararAudio(index: Int) {
         stopSeekBarUpdater()
-        player?.pause()
-        player?.seekTo(0)
-        player?.clearMediaItems() // Asegúrate de limpiar el reproductor
+        player?.stop()
         seekBar.progress = 0
-
         val mediaItem = MediaItem.fromUri(Uri.parse(audioUrls[index]))
         player?.setMediaItem(mediaItem)
         player?.prepare()
-
-        if (isPlaying) {
-            player?.play()
-            btnPlayPause.setImageResource(R.drawable.ic_pause)
-        } else {
-            btnPlayPause.setImageResource(R.drawable.ic_play)
-        }
+        player?.play()
+        btnPlayPause.setImageResource(R.drawable.ic_pause)
+        isPlaying = true
         startSeekBarUpdater()
     }
 
-
-
+    // Actualizar la barra de progreso cada 500ms
     private fun startSeekBarUpdater() {
         timer = Timer()
         timer?.scheduleAtFixedRate(object : TimerTask() {
@@ -160,15 +151,12 @@ class MainActivity : AppCompatActivity() {
                         if (it.duration > 0) {
                             val progress = (it.currentPosition * 100 / it.duration).toInt()
                             seekBar.progress = progress
-                        } else {
-                            seekBar.progress = 0
                         }
                     }
                 }
             }
         }, 0, 500)
     }
-
 
     private fun stopSeekBarUpdater() {
         timer?.cancel()
