@@ -66,14 +66,11 @@ class MainActivity : AppCompatActivity() {
             if (isPlaying) {
                 player?.pause()
                 btnPlayPause.setImageResource(R.drawable.ic_play)
-                isPlaying = false
             } else {
                 player?.play()
                 btnPlayPause.setImageResource(R.drawable.ic_pause)
-                isPlaying = true
-                startSeekBarUpdater()
-                startAudioService() // Si tienes el servicio para audio en segundo plano
             }
+            isPlaying = !isPlaying
         }
 
         // Botón Siguiente: cambia al siguiente audio
@@ -93,9 +90,14 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnStop.setOnClickListener {
+            stopSeekBarUpdater()
             player?.stop()
             player?.seekTo(0)
-            stopAudioService()
+            player?.clearMediaItems()
+
+            seekBar.progress = 0
+            isPlaying = false
+            btnPlayPause.setImageResource(R.drawable.ic_play)
         }
 
         seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
@@ -114,28 +116,41 @@ class MainActivity : AppCompatActivity() {
             override fun onPlaybackStateChanged(state: Int) {
                 if (state == Player.STATE_ENDED) {
                     stopSeekBarUpdater()
-                    isPlaying = false
-                    btnPlayPause.setImageResource(R.drawable.ic_play)
+                    // Pasar a la siguiente canción automáticamente
+                    if (currentAudioIndex < audioUrls.size - 1) {
+                        currentAudioIndex++
+                    } else {
+                        currentAudioIndex = 0
+                    }
+                    cargarYPrepararAudio(currentAudioIndex)
                 }
             }
         })
-    }
+}
 
 
     private fun cargarYPrepararAudio(index: Int) {
         stopSeekBarUpdater()
-        player?.stop()
+        player?.pause()
+        player?.seekTo(0)
+        player?.clearMediaItems() // Asegúrate de limpiar el reproductor
         seekBar.progress = 0
+
         val mediaItem = MediaItem.fromUri(Uri.parse(audioUrls[index]))
         player?.setMediaItem(mediaItem)
         player?.prepare()
-        player?.play()
-        btnPlayPause.setImageResource(R.drawable.ic_pause)
-        isPlaying = true
+
+        if (isPlaying) {
+            player?.play()
+            btnPlayPause.setImageResource(R.drawable.ic_pause)
+        } else {
+            btnPlayPause.setImageResource(R.drawable.ic_play)
+        }
         startSeekBarUpdater()
     }
 
-    // Actualizar la barra de progreso cada 500ms
+
+
     private fun startSeekBarUpdater() {
         timer = Timer()
         timer?.scheduleAtFixedRate(object : TimerTask() {
@@ -145,12 +160,15 @@ class MainActivity : AppCompatActivity() {
                         if (it.duration > 0) {
                             val progress = (it.currentPosition * 100 / it.duration).toInt()
                             seekBar.progress = progress
+                        } else {
+                            seekBar.progress = 0
                         }
                     }
                 }
             }
         }, 0, 500)
     }
+
 
     private fun stopSeekBarUpdater() {
         timer?.cancel()
