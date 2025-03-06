@@ -6,21 +6,60 @@
     android:gravity="center"
     android:padding="16dp">
 
-    <Button
-        android:id="@+id/btnPlay"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Reproducir" />
 
-    <Button
-        android:id="@+id/btnPause"
-        android:layout_width="wrap_content"
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Pausar" />
+        android:max="100" />
 
-    <Button
+    <ImageButton
+        android:id="@+id/btnPrev"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:adjustViewBounds="true"
+        android:background="@null"
+
+        android:contentDescription="@string/previous_audio"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_previous"
+        android:translationX="-125dp"
+        android:translationY="95dp" />
+
+    <ImageButton
+        android:id="@+id/btnPlayPause"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:adjustViewBounds="true"
+        android:background="@null"
+        android:contentDescription="@string/play_pause"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_play"
+        android:translationX="-40dp"
+        android:translationY="45dp" />
+
+    <ImageButton
         android:id="@+id/btnStop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Detener" />
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:adjustViewBounds="true"
+        android:background="@null"
+        android:contentDescription="@string/stop"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_stop"
+        android:translationX="40dp" />
+
+    <ImageButton
+        android:id="@+id/btnNext"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:adjustViewBounds="true"
+        android:background="@null"
+        android:contentDescription="@string/next_audio"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_next"
+        android:translationX="125dp"
+        android:translationY="-45dp" />
+
 </LinearLayout>
+

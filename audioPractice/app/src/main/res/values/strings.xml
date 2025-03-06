@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">audioPractice</string>
+    <string name="play_pause">Play/Pause</string>
+    <string name="stop">Stop</string>
+    <string name="previous_audio">Back</string>
+    <string name="next_audio">Next</string>
+
+
+
 </resources>
