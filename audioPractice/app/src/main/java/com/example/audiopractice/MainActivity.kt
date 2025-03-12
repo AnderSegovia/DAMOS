@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         "https://tonosmovil.net/wp-content/uploads/sonidos-graciosos/Wii_Song.mp3",
         "https://tonosmovil.net/wp-content/uploads/descargar_tonos/Zelda.mp3",
         "https://tonosmovil.net/wp-content/uploads/descargar_tonos2024/Tokyo-Ghoul.mp3",
-        "https://youtu.be/FwENr8Mr6SU?si=eTwpWkyLcS_7-ibB",
+        "R.raw.audiolocal",
         "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
     )
     private var currentAudioIndex = 0
@@ -126,7 +126,6 @@ class MainActivity : AppCompatActivity() {
             }
         })
     }
-
 
     private fun cargarYPrepararAudio(index: Int) {
         stopSeekBarUpdater()

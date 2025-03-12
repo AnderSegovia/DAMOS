@@ -23,7 +23,7 @@
         android:contentDescription="@string/previous_audio"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_previous"
-        android:translationX="-125dp"
+        android:translationX="-155dp"
         android:translationY="95dp" />
 
     <ImageButton
@@ -35,7 +35,7 @@
         android:contentDescription="@string/play_pause"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_play"
-        android:translationX="-40dp"
+        android:translationX="-55dp"
         android:translationY="45dp" />
 
     <ImageButton
@@ -47,7 +47,7 @@
         android:contentDescription="@string/stop"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_stop"
-        android:translationX="40dp" />
+        android:translationX="55dp" />
 
     <ImageButton
         android:id="@+id/btnNext"
@@ -58,7 +58,7 @@
         android:contentDescription="@string/next_audio"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_next"
-        android:translationX="125dp"
+        android:translationX="155dp"
         android:translationY="-45dp" />
 
 </LinearLayout>
