@@ -1,0 +1,39 @@
+
+
+# Archivos de construcción de Gradle
+.gradle/
+build/
+out/
+
+# Archivos de configuración de IDE
+.idea/
+*.iml
+
+# Archivos de configuración de Android Studio (si aplicable)
+local.properties
+
+# Archivos de configuración de Kotlin
+.kotlinc/
+
+# Archivos temporales
+*.log
+*.tmp
+
+# Archivos generados
+*.class
+*.jar
+*.war
+*.ear
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos de prueba o cobertura (si estás utilizando alguna herramienta de pruebas o cobertura)
+*.coverage
+*.test
+*.jar
+
+# Dependencias de Gradle (serán descargadas automáticamente al ejecutar el proyecto)
+*.gradle
+*.gradle.kts
